@@ -22,27 +22,6 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.demo-card-image.mdl-card {
-  width: 100px;
-  height: 100px;
-  background-color: #607d8b;
-  min-height: initial;
-  /*margin-right: 10px;*/
-  /*margin-bottom: 10px;*/
-  /*transition: transform .1s ease-in;*/
-}
-
-.demo-card-image.mdl-card:hover{
-  /*transform: scale(1.1);*/
-}
-
-.demo-card-image.mdl-card > .mdl-card__title {
-  color: #fff;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 28px;
-}
-
 .page-content {
   padding: 10px;
   display: flex;
@@ -57,6 +36,9 @@
   border: 1px solid rgba(127,255,255,0.25);
   text-align: center;
   cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .element:hover {
   box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
@@ -70,20 +52,9 @@
   color: rgba(127,255,255,0.75);
 }
 .element .symbol {
-  position: absolute;
-  top: 40px;
-  left: 0px;
-  right: 0px;
-  font-size: 60px;
+  font-size: 32px;
   font-weight: bold;
   color: rgba(255,255,255,0.75);
   text-shadow: 0 0 10px rgba(0,255,255,0.95);
-}
-.element .details {
-  position: absolute;
-  bottom: 15px;
-  left: 0px;
-  right: 0px;
-  font-size: 12px;
-  color: rgba(127,255,255,0.75);
+  writing-mode: vertical-lr;
 }
