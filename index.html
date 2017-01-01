@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>LUTTERY</title>
-  <link rel="stylesheet" href="./node_modules/material-design-lite/material.min.css">
-  <script src="./node_modules/material-design-lite/material.min.js"></script>
+  <link rel="stylesheet" href="./public/material.min.css">
+  <script src="./public/material.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
     </div>
     <main class="mdl-layout__content">
       <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
-        <div class="page-content">
+        <div class="page-content" id="container">
         </div>
       </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-2">
@@ -45,6 +45,10 @@
       </section>
     </main>
   </div>
+  <script src="./public/three.min.js"></script>
+  <script src="./public/tween.min.js"></script>
+  <script src="./public/TrackballControls.js"></script>
+  <script src="./public/CSS3DRenderer.js"></script>
   <script src="./users.js"></script>
   <script src="./index.js"></script>
 </body>

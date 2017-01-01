@@ -18,17 +18,6 @@
     a {
       color: #ffffff;
     }
-    #info {
-      position: absolute;
-      width: 100%;
-      color: #ffffff;
-      padding: 5px;
-      font-family: Monospace;
-      font-size: 13px;
-      font-weight: bold;
-      text-align: center;
-      z-index: 1;
-    }
     #menu {
       position: absolute;
       bottom: 20px;
@@ -96,7 +85,6 @@
 <script src="./public/CSS3DRenderer.js"></script>
 
 <div id="container"></div>
-<div id="info"><a href="http://threejs.org" target="_blank">three.js css3d</a> - periodic table. <a href="https://plus.google.com/113862800338869870683/posts/QcFk5HrWran" target="_blank">info</a>.</div>
 <div id="menu">
   <button id="table">TABLE</button>
   <button id="sphere">SPHERE</button>
@@ -259,10 +247,10 @@
       scene.add( object );
       objects.push( object );
       //
-      var object = new THREE.Object3D();
-      object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
-      object.position.y = - ( table[ i + 4 ] * 180 ) + 990;
-      targets.table.push( object );
+      var tableO = new THREE.Object3D();
+      tableO.position.x = ( table[ i + 3 ] * 140 ) - 1330;
+      tableO.position.y = - ( table[ i + 4 ] * 180 ) + 990;
+      targets.table.push( tableO );
     }
     // sphere
     var vector = new THREE.Vector3();
