@@ -9,6 +9,10 @@ var controls;
 var objects = [];
 var targets = { table: [], sphere: [], helix: [], grid: [] };
 
+let activeIndex = null;
+let updateIterate = 0;
+let isRunning = false;
+
 function init() {
   camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
   camera.position.z = 2800;
@@ -17,6 +21,7 @@ function init() {
   for ( let i = 0; i < users.length; i++ ) {
     const element = document.createElement( 'div' );
     element.className = 'element';
+    element.setAttribute('data-id',users[i].id);
     element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
     const number = document.createElement( 'div' );
     number.className = 'number';
@@ -137,6 +142,15 @@ function animate() {
   requestAnimationFrame( animate );
   TWEEN.update();
   controls.update();
+  if(isRunning) {
+    if(activeIndex!=null){
+      objects[activeIndex].element.classList.remove('active');
+      activeIndex = (activeIndex +1)%users.length;
+    }else {
+      activeIndex = 0;
+    }
+    objects[activeIndex].element.classList.add('active');
+  }
 }
 
 function render() {
@@ -146,4 +160,12 @@ function render() {
 document.addEventListener('DOMContentLoaded', ()=> {
   init();
   animate();
+  const container = document.getElementById('container');
+  document.getElementById('reward_btn').addEventListener('click',(e)=>{
+    isRunning = !isRunning;
+    e.target.innerText = isRunning ? '停止':'开始';
+    if(!isRunning){
+      container.querySelector(`[data-id="${activeIndex}"]`).classList.add('reward');
+    }
+  });
 });
