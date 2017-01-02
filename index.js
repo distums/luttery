@@ -145,10 +145,8 @@ function animate() {
   if(isRunning) {
     if(activeIndex!=null){
       objects[activeIndex].element.classList.remove('active');
-      activeIndex = (activeIndex +1)%users.length;
-    }else {
-      activeIndex = 0;
     }
+    activeIndex = Math.floor(Math.random()*10000)%users.length;
     objects[activeIndex].element.classList.add('active');
   }
 }
