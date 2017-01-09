@@ -8,39 +8,29 @@
   <script src="./public/material.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
-<body style="background-color: #000">
+<body style="background-color: #232741">
+  <div id="particles-js"></div>
   <div id="container"></div>
-  <button class="reward-button" id="reward_btn">开始</button>
-  <!--<div class="mdl-layout mdl-js-layout">-->
-    <!--<header class="mdl-layout__header">-->
-      <!--<div class="mdl-layout__header-row">-->
-        <!--<span class="mdl-layout-title">陆金所2016年终抽奖</span>-->
-        <!--<div class="mdl-layout-spacer"></div>-->
-        <!--<nav class="mdl-navigation">-->
-          <!--<a class="mdl-navigation__link" href="#" id="table">table</a>-->
-          <!--<a class="mdl-navigation__link" href="#" id="sphere">sphere</a>-->
-          <!--<a class="mdl-navigation__link" href="#" id="helix">helix</a>-->
-          <!--<a class="mdl-navigation__link" href="#" id="grid">grid</a>-->
-        <!--</nav>-->
-      <!--</div>-->
-    <!--</header>-->
-    <!--<div class="mdl-layout__drawer">-->
-      <!--<span class="mdl-layout-title">Title</span>-->
-      <!--<nav class="mdl-navigation">-->
-        <!--<a class="mdl-navigation__link" href="">Link</a>-->
-        <!--<a class="mdl-navigation__link" href="">Link</a>-->
-        <!--<a class="mdl-navigation__link" href="">Link</a>-->
-        <!--<a class="mdl-navigation__link" href="">Link</a>-->
-      <!--</nav>-->
-    <!--</div>-->
-    <!--<main class="mdl-layout__content">-->
-      <!--<div class="page-content" id="container">&lt;!&ndash; Your content goes here &ndash;&gt;</div>-->
-    <!--</main>-->
-  <!--</div>-->
+  <button class="button button--reward" id="reward_btn">开始</button>
+  <ul class="button-group">
+    <li>
+      <button class="button" id="table">table</button>
+    </li>
+    <li>
+      <button class="button" id="sphere">sphere</button>
+    </li>
+    <li>
+      <button class="button" id="helix">helix</button>
+    </li>
+    <li>
+      <button class="button" id="grid">grid</button>
+    </li>
+  </ul>
   <script src="./public/three.min.js"></script>
   <script src="./public/tween.min.js"></script>
   <script src="./public/TrackballControls.js"></script>
   <script src="./public/CSS3DRenderer.js"></script>
+  <script src="./public/particles.min.js"></script>
   <script src="./users.js"></script>
   <script src="./index.js"></script>
 </body>
