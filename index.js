@@ -18,6 +18,7 @@ function init() {
   camera.position.z = 2800;
   scene = new THREE.Scene();
   // table
+  let pointer = 0;
   for (let i = 0; i < TOTAL_USER; i++) {
     const element = document.createElement('div');
     element.className = 'element';
@@ -39,9 +40,11 @@ function init() {
     objects.push(object);
     //
     const objectForTable = new THREE.Object3D();
-    objectForTable.position.x = ( (i % USERS_COUNT_PER_ROW + 1) * 140 ) - 1840;
-    objectForTable.position.y = -((Math.floor(i / USERS_COUNT_PER_ROW) + 1) * 180 ) + 990;
+    pointer += Math.random() * 10 > 2 ? 0 : 1;
+    objectForTable.position.x = ( (pointer % USERS_COUNT_PER_ROW + 1) * 140 ) - 1840;
+    objectForTable.position.y = -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 180 ) + 990;
     targets.table.push(objectForTable);
+    pointer++;
   }
   // sphere
   var vector = new THREE.Vector3();
