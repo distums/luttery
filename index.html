@@ -11,8 +11,15 @@
 <body style="background-color: #232741">
   <div id="particles-js"></div>
   <div id="container"></div>
-  <button class="button button--reward" id="reward_btn">开始</button>
-  <ul class="button-group">
+  <ul class="button-group button-group--reward">
+    <li>
+      <button class="button button--reward" id="reward_btn">开始</button>
+    </li>
+    <li>
+      <button class="button button--reward" id="shuffle_btn">洗牌</button>
+    </li>
+  </ul>
+  <ul class="button-group button-group--actions">
     <li>
       <button class="button" id="table">table</button>
     </li>
@@ -26,6 +33,12 @@
       <button class="button" id="grid">grid</button>
     </li>
   </ul>
+  <div id="reward-container">
+    <div class="element">
+      <div class="number">0</div>
+      <div class="symbol">中奖用户</div>
+    </div>
+  </div>
   <script src="./public/three.min.js"></script>
   <script src="./public/tween.min.js"></script>
   <script src="./public/TrackballControls.js"></script>

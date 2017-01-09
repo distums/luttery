@@ -10,9 +10,6 @@ let controls;
 let objects = [];
 let targets = {table: [], sphere: [], helix: [], grid: []};
 
-let activeIndex = null;
-let isRunning = false;
-
 function init() {
   camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
   camera.position.z = 2800;
@@ -23,6 +20,7 @@ function init() {
     const element = document.createElement('div');
     element.className = 'element';
     element.setAttribute('data-id', users[i].id);
+    element.setAttribute('data-name', users[i].name);
     element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
     const number = document.createElement('div');
     number.className = 'number';
@@ -134,6 +132,21 @@ function transform(targets, duration) {
     .start();
 }
 
+function randomTargets(objects) {
+  const targets = objects;
+  const results = [];
+  let pointer = 0;
+  for (let i = 0, length = targets.length; i < length; i++) {
+    const objectForTable = new THREE.Object3D();
+    pointer += Math.random() * 10 > 2 ? 0 : 1;
+    objectForTable.position.x = ( (pointer % USERS_COUNT_PER_ROW + 1) * 140 ) - 1840;
+    objectForTable.position.y = -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 180 ) + 990;
+    results.push(objectForTable);
+    pointer++;
+  }
+  return results;
+}
+
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -145,13 +158,6 @@ function animate() {
   requestAnimationFrame(animate);
   TWEEN.update();
   controls.update();
-  if (isRunning) {
-    if (activeIndex != null) {
-      objects[activeIndex].element.classList.remove('active');
-    }
-    activeIndex = Math.floor(Math.random() * TOTAL_USER);
-    objects[activeIndex].element.classList.add('active');
-  }
 }
 
 function render() {
@@ -271,16 +277,61 @@ function particles() {
   });
 }
 
+// fisher-yates-shuffle
+// http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  let currentIndex = array.length
+    , temporaryValue
+    , randomIndex
+    ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   init();
   animate();
   particles();
   const container = document.getElementById('container');
-  document.getElementById('reward_btn').addEventListener('click', (e) => {
-    isRunning = !isRunning;
-    e.target.innerText = isRunning ? '停止' : '开始';
-    if (!isRunning) {
-      container.querySelector(`[data-id="${activeIndex}"]`).classList.add('reward');
+  const rewardContainer = document.getElementById('reward-container');
+  const rewardElement = rewardContainer.firstElementChild;
+  document.getElementById('reward_btn').addEventListener('click', (() => {
+    let isStart = false;
+    return (e) => {
+      if (isStart && !confirm('确认结束抽奖？')) {
+        return;
+      }
+      isStart = !isStart;
+      container.classList[isStart ? 'add' : 'remove']('running');
+      e.target.innerText = isStart ? '结束' : '开始';
+    };
+  })());
+  document.getElementById('shuffle_btn').addEventListener('click', () => {
+    shuffle(objects);
+    transform(randomTargets(objects), 2000);
+  });
+  container.addEventListener('click', (e) => {
+    const target = e.target.closest('.element');
+    if (target) {
+      target.classList.add('reward');
+      rewardContainer.style.display = 'block';
+      rewardElement.classList.add('animation');
     }
+  });
+  rewardContainer.addEventListener('click', () => {
+    rewardContainer.style.display = 'none';
   });
 });

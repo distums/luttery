@@ -54,22 +54,26 @@ body {
 
 .button--reward {
   padding: 20px 40px;
-  position: fixed;
-  right: 20px;
-  bottom: 100px;
   font-size: 42px;
 }
 
 .button-group {
   position: fixed;
   display: flex;
-  width: 200px;
+  width: 350px;
   right: 20px;
-  bottom: 60px;
   justify-content: space-between;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.button-group--reward {
+  bottom: 100px;
+}
+
+.button-group--actions {
+  bottom: 60px;
 }
 
 .element {
@@ -78,22 +82,14 @@ body {
   box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
   border: 1px solid rgba(127, 255, 255, 0.25);
   text-align: center;
-  cursor: default;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .element:hover {
   box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
-}
-
-.element.active {
-  box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
-}
-
-.element.reward .symbol {
-  /*color: red;*/
 }
 
 .element .number {
@@ -110,4 +106,39 @@ body {
   color: rgba(255, 255, 255, 0.75);
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
   writing-mode: vertical-lr;
+}
+
+#container.running .element:not(.reward) .symbol,
+#container.running .element:not(.reward) .number {
+  visibility: hidden;
+}
+
+#reward-container {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+#reward-container .element {
+  position: absolute;
+  left: calc(50vw - 60px);
+  top: calc(50vh - 90px);
+  transform-origin: center center;
+}
+
+#reward-container .element.animation {
+  animation: flip 1s ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flip {
+  0% {
+    transform: scale(0) rotateY(0deg);
+  }
+  100% {
+    transform: scale(2) rotateY(360deg);
+  }
 }
