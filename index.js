@@ -9,6 +9,7 @@ let camera, scene, renderer;
 let controls;
 let objects = [];
 let targets = {table: [], sphere: [], helix: [], grid: []};
+let displayTarget = 'table';
 
 function init() {
   camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
@@ -93,18 +94,22 @@ function init() {
   controls.addEventListener('change', render);
   var button = document.getElementById('table');
   button.addEventListener('click', function (event) {
+    displayTarget = 'table';
     transform(targets.table, 2000);
   }, false);
   var button = document.getElementById('sphere');
   button.addEventListener('click', function (event) {
+    displayTarget = 'sphere';
     transform(targets.sphere, 2000);
   }, false);
   var button = document.getElementById('helix');
   button.addEventListener('click', function (event) {
+    displayTarget = 'helix';
     transform(targets.helix, 2000);
   }, false);
   var button = document.getElementById('grid');
   button.addEventListener('click', function (event) {
+    displayTarget = 'grid';
     transform(targets.grid, 2000);
   }, false);
   transform(targets.table, 2000);
@@ -133,10 +138,12 @@ function transform(targets, duration) {
 }
 
 function randomTargets(objects) {
-  const targets = objects;
+  if (displayTarget !== 'table') {
+    return targets[displayTarget];
+  }
   const results = [];
   let pointer = 0;
-  for (let i = 0, length = targets.length; i < length; i++) {
+  for (let i = 0, length = objects.length; i < length; i++) {
     const objectForTable = new THREE.Object3D();
     pointer += Math.random() * 10 > 2 ? 0 : 1;
     objectForTable.position.x = ( (pointer % USERS_COUNT_PER_ROW + 1) * 140 ) - 1840;
@@ -308,6 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('container');
   const rewardContainer = document.getElementById('reward-container');
   const rewardElement = rewardContainer.firstElementChild;
+  const rewardNumber = rewardElement.firstElementChild;
+  const rewardSymbol = rewardElement.lastElementChild;
   document.getElementById('reward_btn').addEventListener('click', (() => {
     let isStart = false;
     return (e) => {
@@ -317,11 +326,24 @@ document.addEventListener('DOMContentLoaded', () => {
       isStart = !isStart;
       container.classList[isStart ? 'add' : 'remove']('running');
       e.target.innerText = isStart ? '结束' : '开始';
+      const rewardElements = container.querySelectorAll('.reward');
+      for (const item of rewardElements) {
+        item.classList.remove('reward');
+      }
     };
   })());
-  document.getElementById('shuffle_btn').addEventListener('click', () => {
-    shuffle(objects);
-    transform(randomTargets(objects), 2000);
+  document.getElementById('shuffle_btn').addEventListener('click', (e) => {
+    const {target} = e;
+    target.disabled = true;
+    (function execute(maxCount, interval = 200) {
+      if (maxCount > 0) {
+        shuffle(objects);
+        transform(randomTargets(objects), interval);
+        setTimeout(() => execute(maxCount - 1), interval * 2);
+      } else {
+        target.disabled = false;
+      }
+    })(5);
   });
   container.addEventListener('click', (e) => {
     const target = e.target.closest('.element');
@@ -329,6 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
       target.classList.add('reward');
       rewardContainer.style.display = 'block';
       rewardElement.classList.add('animation');
+      rewardNumber.innerText = parseInt(target.dataset.id, 10) + 1;
+      rewardSymbol.innerText = target.dataset.name;
     }
   });
   rewardContainer.addEventListener('click', () => {

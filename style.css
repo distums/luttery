@@ -74,6 +74,7 @@ body {
 
 .button-group--actions {
   bottom: 60px;
+  justify-content: space-around;
 }
 
 .element {
