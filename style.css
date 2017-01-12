@@ -60,7 +60,7 @@ body {
 .button-group {
   position: fixed;
   display: flex;
-  width: 350px;
+  width: 380px;
   right: 20px;
   justify-content: space-between;
   list-style: none;
