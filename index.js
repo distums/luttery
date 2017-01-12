@@ -311,7 +311,7 @@ function shuffle(array) {
 document.addEventListener('DOMContentLoaded', () => {
   init();
   animate();
-  particles();
+  setTimeout(particles, 500);
   const container = document.getElementById('container');
   const rewardContainer = document.getElementById('reward-container');
   const rewardElement = rewardContainer.firstElementChild;
