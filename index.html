@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,29 +9,67 @@
   <script src="./public/material.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
+
 <body style="background-color: #232741">
   <div id="particles-js"></div>
   <div id="container"></div>
   <ul class="button-group button-group--reward">
     <li>
-      <button class="button button--reward" id="reward_btn">开始</button>
+      <button class="button button--reward" id="start-btn">开始</button>
     </li>
     <li>
-      <button class="button button--reward" id="shuffle_btn">Shuffle</button>
-    </li>
-  </ul>
-  <ul class="button-group button-group--actions">
-    <li>
-      <button class="button" id="table">table</button>
+      <button class="button button--reward" id="level1-1" data-remain="3" data-size="6">
+        <div>一等奖-1</div>
+        <div class="button--remain">(6 * 3)</div>
+      </button>
     </li>
     <li>
-      <button class="button" id="sphere">sphere</button>
+      <button class="button button--reward" id="level1-2" data-remain="3" data-size="6">
+        <div>一等奖-2</div>
+        <div class="button--remain">(6 * 3)</div>
+      </button>
     </li>
     <li>
-      <button class="button" id="helix">helix</button>
+      <button class="button button--reward" id="level2-1" data-remain="5" data-size="5">
+        <div>二等奖-1</div>
+        <div class="button--remain">(5 * 5)</div>
+      </button>
     </li>
     <li>
-      <button class="button" id="grid">grid</button>
+      <button class="button button--reward" id="level2-2" data-remain="5" data-size="5">
+        <div>二等奖-2</div>
+        <div class="button--remain">(5 * 5)</div>
+      </button>
+    </li>
+    <li>
+      <button class="button button--reward" id="level3-1" data-remain="2" data-size="25">
+        <div>三等奖-1</div>
+        <div class="button--remain">(25 * 2)</div>
+      </button>
+    </li>
+    <li>
+      <button class="button button--reward" id="level3-2" data-remain="2" data-size="25">
+        <div>三等奖-2</div>
+        <div class="button--remain">(25 * 2)</div>
+      </button>
+    </li>
+    <li>
+      <button class="button button--reward" id="level4-1" data-remain="3" data-size="20">
+        <div>四等奖-1</div>
+        <div class="button--remain">(20 * 3)</div>
+      </button>
+    </li>
+    <li>
+      <button class="button button--reward" id="level4-2" data-remain="3" data-size="20">
+        <div>四等奖-2</div>
+        <div class="button--remain">(20 * 3)</div>
+      </button>
+    </li>
+    <li>
+      <button class="button button--reward" id="level5" data-remain="10" data-size="20">
+        <div>五等奖</div>
+        <div class="button--remain">(20 * 10)</div>
+      </button>
     </li>
   </ul>
   <div id="reward-container">
@@ -47,4 +86,5 @@
   <script src="./users.js"></script>
   <script src="./index.js"></script>
 </body>
+
 </html>

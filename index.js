@@ -50,8 +50,7 @@ function init() {
     //
     const objectForTable = new THREE.Object3D();
     // pointer += Math.random() * 10 > 2 ? 0 : 1;
-    objectForTable.position.x =
-      (pointer % USERS_COUNT_PER_ROW + 1) * 70 - 1840;
+    objectForTable.position.x = (pointer % USERS_COUNT_PER_ROW + 1) * 70 - 1840;
     objectForTable.position.y =
       -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 90) + 990;
     targets.table.push(objectForTable);
@@ -104,42 +103,6 @@ function init() {
   controls.minDistance = 500;
   controls.maxDistance = 6000;
   controls.addEventListener('change', render);
-  var button = document.getElementById('table');
-  button.addEventListener(
-    'click',
-    function(event) {
-      displayTarget = 'table';
-      transform(targets.table, 2000);
-    },
-    false
-  );
-  var button = document.getElementById('sphere');
-  button.addEventListener(
-    'click',
-    function(event) {
-      displayTarget = 'sphere';
-      transform(targets.sphere, 2000);
-    },
-    false
-  );
-  var button = document.getElementById('helix');
-  button.addEventListener(
-    'click',
-    function(event) {
-      displayTarget = 'helix';
-      transform(targets.helix, 2000);
-    },
-    false
-  );
-  var button = document.getElementById('grid');
-  button.addEventListener(
-    'click',
-    function(event) {
-      displayTarget = 'grid';
-      transform(targets.grid, 2000);
-    },
-    false
-  );
   transform(targets.table, 2000);
   //
   window.addEventListener('resize', onWindowResize, false);
@@ -179,11 +142,10 @@ function randomTargets(objects) {
   let pointer = 0;
   for (let i = 0, length = objects.length; i < length; i++) {
     const objectForTable = new THREE.Object3D();
-    pointer += Math.random() * 10 > 2 ? 0 : 1;
-    objectForTable.position.x =
-      (pointer % USERS_COUNT_PER_ROW + 1) * 140 - 1840;
+    // pointer += Math.random() * 10 > 2 ? 0 : 1;
+    objectForTable.position.x = (pointer % USERS_COUNT_PER_ROW + 1) * 70 - 1840;
     objectForTable.position.y =
-      -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 180) + 990;
+      -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 90) + 990;
     results.push(objectForTable);
     pointer++;
   }
@@ -351,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rewardElement = rewardContainer.firstElementChild;
   const rewardNumber = rewardElement.firstElementChild;
   const rewardSymbol = rewardElement.lastElementChild;
-  document.getElementById('reward_btn').addEventListener(
+  document.getElementById('start-btn').addEventListener(
     'click',
     (() => {
       let isStart = false;
@@ -369,19 +331,27 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     })()
   );
-  document.getElementById('shuffle_btn').addEventListener('click', e => {
-    const { target } = e;
-    target.disabled = true;
-    (function execute(maxCount, interval = 200) {
-      if (maxCount > 0) {
-        shuffle(objects);
-        transform(randomTargets(objects), interval);
-        setTimeout(() => execute(maxCount - 1), interval * 2);
-      } else {
-        target.disabled = false;
-      }
-    })(5);
-  });
+  // document.getElementById('shuffle_btn').addEventListener('click', e => {
+  //   const { target } = e;
+  //   target.disabled = true;
+  //   (function execute(maxCount, interval = 200) {
+  //     if (maxCount > 0) {
+  //       shuffle(objects);
+  //       transform(randomTargets(objects), interval);
+  //       setTimeout(() => execute(maxCount - 1), interval * 2);
+  //     } else {
+  //       target.disabled = false;
+  //     }
+  //   })(5);
+  // });
+  document
+    .querySelectorAll('.button--reward:not(#start-btn)')
+    .forEach(button => {
+      console.log(button);
+      button.addEventListener('click', () => {
+        alert(button.id);
+      });
+    });
   container.addEventListener('click', e => {
     const target = e.target.closest('.element');
     if (target) {
