@@ -1,18 +1,27 @@
 /**
  * Created by distu on 2016/12/19.
  */
-const users = (window.users || []).map((name, index) => ({name, isReward: false, id: index}));
+const users = (window.users || []).map((name, index) => ({
+  name,
+  isReward: false,
+  id: index,
+}));
 const TOTAL_USER = users.length;
-const USERS_COUNT_PER_ROW = 25;
+const USERS_COUNT_PER_ROW = 50;
 
 let camera, scene, renderer;
 let controls;
 let objects = [];
-let targets = {table: [], sphere: [], helix: [], grid: []};
+let targets = { table: [], sphere: [], helix: [], grid: [] };
 let displayTarget = 'table';
 
 function init() {
-  camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+  camera = new THREE.PerspectiveCamera(
+    40,
+    window.innerWidth / window.innerHeight,
+    1,
+    10000
+  );
   camera.position.z = 2800;
   scene = new THREE.Scene();
   // table
@@ -22,7 +31,8 @@ function init() {
     element.className = 'element';
     element.setAttribute('data-id', users[i].id);
     element.setAttribute('data-name', users[i].name);
-    element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+    element.style.backgroundColor =
+      'rgba(0,127,127,' + (Math.random() * 0.5 + 0.25) + ')';
     const number = document.createElement('div');
     number.className = 'number';
     number.textContent = users[i].id + 1;
@@ -39,9 +49,11 @@ function init() {
     objects.push(object);
     //
     const objectForTable = new THREE.Object3D();
-    pointer += Math.random() * 10 > 2 ? 0 : 1;
-    objectForTable.position.x = ( (pointer % USERS_COUNT_PER_ROW + 1) * 140 ) - 1840;
-    objectForTable.position.y = -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 180 ) + 990;
+    // pointer += Math.random() * 10 > 2 ? 0 : 1;
+    objectForTable.position.x =
+      (pointer % USERS_COUNT_PER_ROW + 1) * 70 - 1840;
+    objectForTable.position.y =
+      -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 90) + 990;
     targets.table.push(objectForTable);
     pointer++;
   }
@@ -49,7 +61,7 @@ function init() {
   var vector = new THREE.Vector3();
   var spherical = new THREE.Spherical();
   for (var i = 0, l = objects.length; i < l; i++) {
-    var phi = Math.acos(-1 + ( 2 * i ) / l);
+    var phi = Math.acos(-1 + 2 * i / l);
     var theta = Math.sqrt(l * Math.PI) * phi;
     var object = new THREE.Object3D();
     spherical.set(800, phi, theta);
@@ -63,7 +75,7 @@ function init() {
   var cylindrical = new THREE.Cylindrical();
   for (var i = 0, l = objects.length; i < l; i++) {
     var theta = i * 0.175 + Math.PI;
-    var y = -( i * 8 ) + 650;
+    var y = -(i * 8) + 650;
     var object = new THREE.Object3D();
     cylindrical.set(900, theta, y);
     object.position.setFromCylindrical(cylindrical);
@@ -76,9 +88,9 @@ function init() {
   // grid
   for (var i = 0; i < objects.length; i++) {
     var object = new THREE.Object3D();
-    object.position.x = ( ( i % 5 ) * 400 ) - 800;
-    object.position.y = ( -( Math.floor(i / 5) % 5 ) * 400 ) + 800;
-    object.position.z = ( Math.floor(i / 25) ) * 1000 - 2000;
+    object.position.x = (i % 5) * 400 - 800;
+    object.position.y = -(Math.floor(i / 5) % 5) * 400 + 800;
+    object.position.z = Math.floor(i / 25) * 1000 - 2000;
     targets.grid.push(object);
   }
   //
@@ -93,25 +105,41 @@ function init() {
   controls.maxDistance = 6000;
   controls.addEventListener('change', render);
   var button = document.getElementById('table');
-  button.addEventListener('click', function (event) {
-    displayTarget = 'table';
-    transform(targets.table, 2000);
-  }, false);
+  button.addEventListener(
+    'click',
+    function(event) {
+      displayTarget = 'table';
+      transform(targets.table, 2000);
+    },
+    false
+  );
   var button = document.getElementById('sphere');
-  button.addEventListener('click', function (event) {
-    displayTarget = 'sphere';
-    transform(targets.sphere, 2000);
-  }, false);
+  button.addEventListener(
+    'click',
+    function(event) {
+      displayTarget = 'sphere';
+      transform(targets.sphere, 2000);
+    },
+    false
+  );
   var button = document.getElementById('helix');
-  button.addEventListener('click', function (event) {
-    displayTarget = 'helix';
-    transform(targets.helix, 2000);
-  }, false);
+  button.addEventListener(
+    'click',
+    function(event) {
+      displayTarget = 'helix';
+      transform(targets.helix, 2000);
+    },
+    false
+  );
   var button = document.getElementById('grid');
-  button.addEventListener('click', function (event) {
-    displayTarget = 'grid';
-    transform(targets.grid, 2000);
-  }, false);
+  button.addEventListener(
+    'click',
+    function(event) {
+      displayTarget = 'grid';
+      transform(targets.grid, 2000);
+    },
+    false
+  );
   transform(targets.table, 2000);
   //
   window.addEventListener('resize', onWindowResize, false);
@@ -123,11 +151,17 @@ function transform(targets, duration) {
     var object = objects[i];
     var target = targets[i];
     new TWEEN.Tween(object.position)
-      .to({x: target.position.x, y: target.position.y, z: target.position.z}, Math.random() * duration + duration)
+      .to(
+        { x: target.position.x, y: target.position.y, z: target.position.z },
+        Math.random() * duration + duration
+      )
       .easing(TWEEN.Easing.Exponential.InOut)
       .start();
     new TWEEN.Tween(object.rotation)
-      .to({x: target.rotation.x, y: target.rotation.y, z: target.rotation.z}, Math.random() * duration + duration)
+      .to(
+        { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z },
+        Math.random() * duration + duration
+      )
       .easing(TWEEN.Easing.Exponential.InOut)
       .start();
   }
@@ -146,8 +180,10 @@ function randomTargets(objects) {
   for (let i = 0, length = objects.length; i < length; i++) {
     const objectForTable = new THREE.Object3D();
     pointer += Math.random() * 10 > 2 ? 0 : 1;
-    objectForTable.position.x = ( (pointer % USERS_COUNT_PER_ROW + 1) * 140 ) - 1840;
-    objectForTable.position.y = -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 180 ) + 990;
+    objectForTable.position.x =
+      (pointer % USERS_COUNT_PER_ROW + 1) * 140 - 1840;
+    objectForTable.position.y =
+      -((Math.floor(pointer / USERS_COUNT_PER_ROW) + 1) * 180) + 990;
     results.push(objectForTable);
     pointer++;
   }
@@ -172,129 +208,127 @@ function render() {
 }
 
 function particles() {
-  return particlesJS("particles-js", {
-    "particles": {
-      "number": {
-        "value": 160,
-        "density": {
-          "enable": true,
-          "value_area": 800
-        }
-      },
-      "color": {
-        "value": "#ffffff"
-      },
-      "shape": {
-        "type": "circle",
-        "stroke": {
-          "width": 0,
-          "color": "#000000"
+  return particlesJS('particles-js', {
+    particles: {
+      number: {
+        value: 160,
+        density: {
+          enable: true,
+          value_area: 800,
         },
-        "polygon": {
-          "nb_sides": 5
+      },
+      color: {
+        value: '#ffffff',
+      },
+      shape: {
+        type: 'circle',
+        stroke: {
+          width: 0,
+          color: '#000000',
         },
-        "image": {
-          "src": "img/github.svg",
-          "width": 100,
-          "height": 100
-        }
+        polygon: {
+          nb_sides: 5,
+        },
+        image: {
+          src: 'img/github.svg',
+          width: 100,
+          height: 100,
+        },
       },
-      "opacity": {
-        "value": 1,
-        "random": true,
-        "anim": {
-          "enable": true,
-          "speed": 1,
-          "opacity_min": 0,
-          "sync": false
-        }
+      opacity: {
+        value: 1,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 1,
+          opacity_min: 0,
+          sync: false,
+        },
       },
-      "size": {
-        "value": 3,
-        "random": true,
-        "anim": {
-          "enable": false,
-          "speed": 4,
-          "size_min": 0.3,
-          "sync": false
-        }
+      size: {
+        value: 3,
+        random: true,
+        anim: {
+          enable: false,
+          speed: 4,
+          size_min: 0.3,
+          sync: false,
+        },
       },
-      "line_linked": {
-        "enable": false,
-        "distance": 150,
-        "color": "#ffffff",
-        "opacity": 0.4,
-        "width": 1
+      line_linked: {
+        enable: false,
+        distance: 150,
+        color: '#ffffff',
+        opacity: 0.4,
+        width: 1,
       },
-      "move": {
-        "enable": true,
-        "speed": 1,
-        "direction": "none",
-        "random": true,
-        "straight": false,
-        "out_mode": "out",
-        "bounce": false,
-        "attract": {
-          "enable": false,
-          "rotateX": 600,
-          "rotateY": 600
-        }
-      }
+      move: {
+        enable: true,
+        speed: 1,
+        direction: 'none',
+        random: true,
+        straight: false,
+        out_mode: 'out',
+        bounce: false,
+        attract: {
+          enable: false,
+          rotateX: 600,
+          rotateY: 600,
+        },
+      },
     },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onhover": {
-          "enable": true,
-          "mode": "bubble"
+    interactivity: {
+      detect_on: 'canvas',
+      events: {
+        onhover: {
+          enable: true,
+          mode: 'bubble',
         },
-        "onclick": {
-          "enable": true,
-          "mode": "repulse"
+        onclick: {
+          enable: true,
+          mode: 'repulse',
         },
-        "resize": true
+        resize: true,
       },
-      "modes": {
-        "grab": {
-          "distance": 400,
-          "line_linked": {
-            "opacity": 1
-          }
+      modes: {
+        grab: {
+          distance: 400,
+          line_linked: {
+            opacity: 1,
+          },
         },
-        "bubble": {
-          "distance": 250,
-          "size": 0,
-          "duration": 2,
-          "opacity": 0,
-          "speed": 3
+        bubble: {
+          distance: 250,
+          size: 0,
+          duration: 2,
+          opacity: 0,
+          speed: 3,
         },
-        "repulse": {
-          "distance": 400,
-          "duration": 0.4
+        repulse: {
+          distance: 400,
+          duration: 0.4,
         },
-        "push": {
-          "particles_nb": 4
+        push: {
+          particles_nb: 4,
         },
-        "remove": {
-          "particles_nb": 2
-        }
-      }
+        remove: {
+          particles_nb: 2,
+        },
+      },
     },
-    "retina_detect": true
+    retina_detect: true,
   });
 }
 
 // fisher-yates-shuffle
 // http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
-  let currentIndex = array.length
-    , temporaryValue
-    , randomIndex
-    ;
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
@@ -317,23 +351,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const rewardElement = rewardContainer.firstElementChild;
   const rewardNumber = rewardElement.firstElementChild;
   const rewardSymbol = rewardElement.lastElementChild;
-  document.getElementById('reward_btn').addEventListener('click', (() => {
-    let isStart = false;
-    return (e) => {
-      if (isStart && !confirm('确认结束抽奖？')) {
-        return;
-      }
-      isStart = !isStart;
-      container.classList[isStart ? 'add' : 'remove']('running');
-      e.target.innerText = isStart ? '结束' : '开始';
-      const rewardElements = container.querySelectorAll('.reward');
-      for (const item of rewardElements) {
-        item.classList.remove('reward');
-      }
-    };
-  })());
-  document.getElementById('shuffle_btn').addEventListener('click', (e) => {
-    const {target} = e;
+  document.getElementById('reward_btn').addEventListener(
+    'click',
+    (() => {
+      let isStart = false;
+      return e => {
+        if (isStart && !confirm('确认结束抽奖？')) {
+          return;
+        }
+        isStart = !isStart;
+        container.classList[isStart ? 'add' : 'remove']('running');
+        e.target.innerText = isStart ? '结束' : '开始';
+        const rewardElements = container.querySelectorAll('.reward');
+        for (const item of rewardElements) {
+          item.classList.remove('reward');
+        }
+      };
+    })()
+  );
+  document.getElementById('shuffle_btn').addEventListener('click', e => {
+    const { target } = e;
     target.disabled = true;
     (function execute(maxCount, interval = 200) {
       if (maxCount > 0) {
@@ -345,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })(5);
   });
-  container.addEventListener('click', (e) => {
+  container.addEventListener('click', e => {
     const target = e.target.closest('.element');
     if (target) {
       target.classList.add('reward');
