@@ -3,7 +3,6 @@
  */
 const users = (window.users || []).map((name, index) => ({
   name,
-  isReward: false,
   id: index,
 }));
 const TOTAL_USER = users.length;
@@ -304,10 +303,12 @@ function shuffle(array) {
   return array;
 }
 
+let randomNext = null;
+
 document.addEventListener('DOMContentLoaded', () => {
   init();
   animate();
-  setTimeout(particles, 500);
+  setTimeout(particles, 1000);
   const container = document.getElementById('container');
   const rewardContainer = document.getElementById('reward-container');
   const rewardElement = rewardContainer.firstElementChild;
@@ -319,7 +320,24 @@ document.addEventListener('DOMContentLoaded', () => {
       let isStart = false;
       return e => {
         if (isStart && !confirm('确认结束抽奖？')) {
+          console.groupCollapsed('获奖名单：');
+          console.table(randomNext.getAll());
+          console.groupEnd();
+          randomNext = null;
           return;
+        }
+        if (!isStart) {
+          e.target.disabled = true;
+          (function execute(maxCount, interval = 200) {
+            if (maxCount > 0) {
+              shuffle(objects);
+              transform(randomTargets(objects), interval);
+              setTimeout(() => execute(maxCount - 1), interval * 2);
+            } else {
+              randomNext = window.randomNextFactory(users);
+              e.target.disabled = false;
+            }
+          })(5);
         }
         isStart = !isStart;
         container.classList[isStart ? 'add' : 'remove']('running');
@@ -331,37 +349,31 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     })()
   );
-  // document.getElementById('shuffle_btn').addEventListener('click', e => {
-  //   const { target } = e;
-  //   target.disabled = true;
-  //   (function execute(maxCount, interval = 200) {
-  //     if (maxCount > 0) {
-  //       shuffle(objects);
-  //       transform(randomTargets(objects), interval);
-  //       setTimeout(() => execute(maxCount - 1), interval * 2);
-  //     } else {
-  //       target.disabled = false;
-  //     }
-  //   })(5);
-  // });
   document
     .querySelectorAll('.button--reward:not(#start-btn)')
     .forEach(button => {
-      console.log(button);
-      button.addEventListener('click', () => {
-        alert(button.id);
+      button.addEventListener('click', e => {
+        if (!randomNext) {
+          alert('请先点击开始');
+          return;
+        }
+        const target = e.target.closest('.button--reward');
+        let remain = parseInt(target.dataset.remain, 10);
+        const size = parseInt(target.dataset.size, 10);
+        console.log('remain', remain, size);
+        console.groupCollapsed(target.firstElementChild.innerText);
+        console.table(randomNext(size));
+        console.groupEnd();
+        remain--;
+        if (remain === 0) {
+          target.innerText = '已抽完';
+          target.disabled = true;
+        } else {
+          target.lastElementChild.innerText = `(${size} * ${remain})`;
+        }
+        target.dataset.remain = remain;
       });
     });
-  container.addEventListener('click', e => {
-    const target = e.target.closest('.element');
-    if (target) {
-      target.classList.add('reward');
-      rewardContainer.style.display = 'block';
-      rewardElement.classList.add('animation');
-      rewardNumber.innerText = parseInt(target.dataset.id, 10) + 1;
-      rewardSymbol.innerText = target.dataset.name;
-    }
-  });
   rewardContainer.addEventListener('click', () => {
     rewardContainer.style.display = 'none';
   });
