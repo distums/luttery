@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     (() => {
       let isStart = false;
       return e => {
-        if (isStart && !confirm('确认结束抽奖？')) {
+        if (isStart && confirm('确认结束抽奖？')) {
           console.groupCollapsed('获奖名单：');
           console.table(randomNext.getAll());
           console.groupEnd();
