@@ -311,9 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(particles, 1000);
   const container = document.getElementById('container');
   const rewardContainer = document.getElementById('reward-container');
+  const batchRewardContainer = document.getElementById(
+    'batch-reward-container'
+  );
   const rewardElement = rewardContainer.firstElementChild;
   const rewardNumber = rewardElement.firstElementChild;
   const rewardSymbol = rewardElement.lastElementChild;
+  const rewardButtons = document.querySelectorAll(
+    '.button--reward:not(#start-btn)'
+  );
   document.getElementById('start-btn').addEventListener(
     'click',
     (() => {
@@ -323,6 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.groupCollapsed('获奖名单：');
           console.table(randomNext.getAll());
           console.groupEnd();
+          resetButtons();
           randomNext = null;
           return;
         }
@@ -349,32 +356,65 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     })()
   );
-  document
-    .querySelectorAll('.button--reward:not(#start-btn)')
-    .forEach(button => {
-      button.addEventListener('click', e => {
-        if (!randomNext) {
-          alert('请先点击开始');
-          return;
-        }
-        const target = e.target.closest('.button--reward');
-        let remain = parseInt(target.dataset.remain, 10);
-        const size = parseInt(target.dataset.size, 10);
-        console.log('remain', remain, size);
-        console.groupCollapsed(target.firstElementChild.innerText);
-        console.table(randomNext(size));
-        console.groupEnd();
-        remain--;
-        if (remain === 0) {
-          target.innerText = '已抽完';
-          target.disabled = true;
-        } else {
-          target.lastElementChild.innerText = `(${size} * ${remain})`;
-        }
-        target.dataset.remain = remain;
+  rewardButtons.forEach(button => {
+    button.dataset.initRemain = button.dataset.remain;
+    button.addEventListener('click', e => {
+      if (!randomNext) {
+        alert('请先点击开始');
+        return;
+      }
+      const target = e.target.closest('.button--reward');
+      let remain = parseInt(target.dataset.remain, 10);
+      const size = parseInt(target.dataset.size, 10);
+      console.groupCollapsed(target.firstElementChild.innerText);
+      const currentRewards = randomNext(size);
+      batchRewardContainer.querySelector('h1').innerText =
+        target.firstElementChild.innerText;
+      batchRewardContainer.querySelector(
+        '.reward-list'
+      ).innerHTML = currentRewards
+        .map(item => `<li>${item.name}</li>`)
+        .join('\n');
+      batchRewardContainer.style.display = 'block';
+      batchRewardContainer.firstElementChild.classList.add('animation');
+      currentRewards.forEach(reward => {
+        // 展示出来的id是+1的，而真正的id是从0开始，见37行
+        container
+          .querySelector(`.element[data-id="${reward.id}"]`)
+          .classList.add('reward');
       });
+      console.table(currentRewards);
+      console.groupEnd();
+      remain--;
+      if (remain === 0) {
+        target.innerText = '已抽完';
+        target.disabled = true;
+      } else {
+        target.lastElementChild.innerText = `(${size} * ${remain})`;
+      }
+      target.dataset.remain = remain;
     });
+  });
+  container.addEventListener('click', e => {
+    const target = e.target.closest('.element');
+    if (target) {
+      target.classList.add('reward');
+      rewardContainer.style.display = 'block';
+      rewardElement.classList.add('animation');
+      rewardNumber.innerText = parseInt(target.dataset.id, 10) + 1;
+      rewardSymbol.innerText = target.dataset.name;
+    }
+  });
   rewardContainer.addEventListener('click', () => {
     rewardContainer.style.display = 'none';
   });
+  batchRewardContainer.addEventListener('click', () => {
+    batchRewardContainer.style.display = 'none';
+  });
+
+  function resetButtons() {
+    rewardButtons.forEach(button => {
+      button.dataset.remain = button.dataset.initRemain;
+    });
+  }
 });

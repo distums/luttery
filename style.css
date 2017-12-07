@@ -117,7 +117,8 @@ body {
   visibility: hidden;
 }
 
-#reward-container {
+#reward-container,
+#batch-reward-container {
   display: none;
   position: fixed;
   width: 100vw;
@@ -153,11 +154,59 @@ body {
   animation-fill-mode: forwards;
 }
 
+#batch-reward-container > section {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 100px;
+  background-color: #fc7946;
+  box-shadow: 0 0 5px #fc7946;
+  border-radius: 5px;
+}
+
+#batch-reward-container > section.animation {
+  animation: scale 600ms ease-out;
+  animation-fill-mode: forwards;
+}
+
+#batch-reward-container h1 {
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  margin: 0;
+  color: #fff;
+}
+
+#batch-reward-container ul {
+  margin: 0;
+  padding: 20px;
+  list-style: none;
+}
+
+#batch-reward-container .reward-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#batch-reward-container li {
+  padding: 3px 5px;
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
 @keyframes flip {
   0% {
     transform: scale(0) rotateY(0deg);
   }
   100% {
     transform: scale(4) rotateY(360deg);
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
