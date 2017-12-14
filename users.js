@@ -4,13 +4,13 @@
 window.users = Array.from({ length: 900 }, (_, index) => '测试用户');
 
 window.randomNextFactory = function(sourceArr) {
-  const sourceClone = [...sourceArr];
+  let sourceClone = [...sourceArr];
   const result = [];
-  const randomNext = length => {
+  const randomNext = (length, label = '') => {
     const currentResult = [];
     while (length-- > 0) {
       const next = Math.floor(Math.random() * sourceClone.length);
-      currentResult.push(sourceClone[next]);
+      currentResult.push(Object.assign({}, sourceClone[next], { label }));
       sourceClone.splice(next, 1);
     }
     result.push(...currentResult);
@@ -18,6 +18,10 @@ window.randomNextFactory = function(sourceArr) {
   };
   randomNext.getAll = () => {
     return result;
+  };
+  randomNext.push = user => {
+    result.push(user);
+    sourceClone = sourceClone.filter(u => u.id !== user.id);
   };
   return randomNext;
 };

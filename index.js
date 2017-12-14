@@ -367,7 +367,10 @@ document.addEventListener('DOMContentLoaded', () => {
       let remain = parseInt(target.dataset.remain, 10);
       const size = parseInt(target.dataset.size, 10);
       console.groupCollapsed(target.firstElementChild.innerText);
-      const currentRewards = randomNext(size);
+      const currentRewards = randomNext(
+        size,
+        target.firstElementChild.innerText
+      );
       batchRewardContainer.querySelector('h1').innerText =
         target.firstElementChild.innerText;
       batchRewardContainer.querySelector(
@@ -403,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rewardElement.classList.add('animation');
       rewardNumber.innerText = parseInt(target.dataset.id, 10) + 1;
       rewardSymbol.innerText = target.dataset.name;
+      randomNext.push(users.find(user => user.id == target.dataset.id));
     }
   });
   rewardContainer.addEventListener('click', () => {
