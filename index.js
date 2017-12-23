@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rewardNumber = rewardElement.firstElementChild;
   const rewardSymbol = rewardElement.lastElementChild;
   const rewardButtons = document.querySelectorAll(
-    '.button--reward:not(#start-btn)'
+    '.button--reward:not(#start-btn):not(#shuffle-btn)'
   );
   document.getElementById('start-btn').addEventListener(
     'click',
@@ -356,6 +356,18 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     })()
   );
+  document.getElementById('shuffle-btn').addEventListener('click', e => {
+    e.target.disabled = true;
+    (function execute(maxCount, interval = 200) {
+      if (maxCount > 0) {
+        shuffle(objects);
+        transform(randomTargets(objects), interval);
+        setTimeout(() => execute(maxCount - 1), interval * 2);
+      } else {
+        e.target.disabled = false;
+      }
+    })(5);
+  });
   rewardButtons.forEach(button => {
     button.dataset.initRemain = button.dataset.remain;
     button.addEventListener('click', e => {

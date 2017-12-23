@@ -57,6 +57,7 @@ body {
 .button--reward {
   padding: 10px 20px;
   font-size: 30px;
+  word-break: break-all;
 }
 
 .button-group {
