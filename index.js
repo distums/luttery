@@ -325,12 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     (() => {
       let isStart = false;
       return e => {
-        if (isStart && confirm('确认结束抽奖？')) {
-          console.groupCollapsed('获奖名单：');
-          console.table(randomNext.getAll());
-          console.groupEnd();
-          resetButtons();
-          randomNext = null;
+        if (isStart && !confirm('确认结束抽奖？')) {
           return;
         }
         if (!isStart) {
@@ -345,6 +340,13 @@ document.addEventListener('DOMContentLoaded', () => {
               e.target.disabled = false;
             }
           })(5);
+        }
+        if (isStart) {
+          console.groupCollapsed('获奖名单：');
+          console.table(randomNext.getAll());
+          console.groupEnd();
+          resetButtons();
+          randomNext = null;
         }
         isStart = !isStart;
         container.classList[isStart ? 'add' : 'remove']('running');
